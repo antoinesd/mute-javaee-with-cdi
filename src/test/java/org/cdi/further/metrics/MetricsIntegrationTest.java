@@ -1,7 +1,6 @@
 package org.cdi.further.metrics;
 
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Snapshot;
 import com.codahale.metrics.Timer;
 import com.codahale.metrics.annotation.Metric;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -16,9 +15,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.FileNotFoundException;
 import javax.enterprise.inject.spi.Extension;
 import javax.inject.Inject;
+import java.io.FileNotFoundException;
 
 /**
  * @author Antoine Sabot-Durand
@@ -40,37 +39,40 @@ public class MetricsIntegrationTest {
                                 "io.dropwizard.metrics:metrics-annotation")
                         .withTransitivity().as(JavaArchive.class))
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-                .addAsServiceProvider(Extension.class, MetricExtension.class);
+                .addAsServiceProvider(Extension.class, MetricsExtension.class);
 
         return ret;
     }
 
 
-    @Inject
-    @Metric(name = "myTimer")
-    com.codahale.metrics.Metric metric;
 
     @Inject
     MetricRegistry registry;
 
     @Inject
+    @Metric(name = "myTimer")
+    Timer timer;
+
+    @Inject
     MetricsTestBean mtb;
+
+    @Test
+    public void shouldTimedInterceptorBeCalled() {
+        mtb.timedMethod();
+        Assert.assertEquals(1, registry.timer("myTimer").getCount());
+    }
 
 
     @Test
     public void shouldMetricsBeTheSame() {
         Timer t = registry.timer("myTimer");
-        Assert.assertSame(t, metric);
+        Assert.assertSame(t, timer);
     }
 
     @Test
-    public void shouldTimedInterceptorBeCalled() {
-        Timer t = registry.timer("myTimer");
-        Snapshot s = t.getSnapshot();
-
-        mtb.timedMethod();
-        Assert.assertFalse(t.getSnapshot().equals(s));
-
+    public void shouldProducedMetricsBeInRegistry() {
+        Assert.assertEquals(2, registry.getMetrics().size());
     }
+
 
 }
