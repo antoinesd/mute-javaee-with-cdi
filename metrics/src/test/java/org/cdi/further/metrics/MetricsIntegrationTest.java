@@ -54,6 +54,10 @@ public class MetricsIntegrationTest {
     Timer timer;
 
     @Inject
+    @Metric(name = "otherTimer")
+    Timer timer2;
+
+    @Inject
     MetricsTestBean mtb;
 
     @Test
