@@ -7,7 +7,7 @@
 		<property name="deploymentExportPath">target/arquillian</property>
 	</engine>
 
-	<container qualifier="weld-ee-embedded-1.1" default="true">
+	<container qualifier="weld-embedded" default="true">
 	</container>
 	
 	<container qualifier="wildfly-arquillian-container-embedded">

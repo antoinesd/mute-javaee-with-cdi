@@ -13,6 +13,8 @@
 
 	<modules>
 		<module>metrics</module>
+		<module>fat-entities</module>
+		<module>async-event</module>
 	</modules>
 
 	<properties>
@@ -31,7 +33,7 @@
 		<!-- Weld version in WildFly 8.1.0.Final 
 		<weld.version>2.1.2.Final</weld.version> -->
 		<weld.version>2.2.6.Final</weld.version>
-		<org.wildfly>9.0.0.Alpha1</org.wildfly>
+		<org.wildfly>10.1.0.Final</org.wildfly>
 		<slf4j-simple.version>1.6.4</slf4j-simple.version>
 
 
@@ -40,12 +42,12 @@
 		<junit.version>4.10</junit.version>
 
 		<jboss-javaee-7.0.version>1.0.1.Final</jboss-javaee-7.0.version>
-		<arquillian-weld-ee-embedded.version>1.0.0.CR8</arquillian-weld-ee-embedded.version>
 		<owb-arquillian-standalone.version>1.2.2</owb-arquillian-standalone.version>
 		<shrinkwrap-resolver.version>2.1.0</shrinkwrap-resolver.version>
 		<maven-surefire-plugin.skip>false</maven-surefire-plugin.skip>
 
 		<deltaspike.version>1.5.0</deltaspike.version>
+		<arquillian-weld-embedded.version>2.0.0.Beta3</arquillian-weld-embedded.version>
 	</properties>
 
 	<dependencyManagement>
@@ -119,8 +121,8 @@
 
 			<dependency>
 				<groupId>org.jboss.arquillian.container</groupId>
-				<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-				<version>${arquillian-weld-ee-embedded.version}</version>
+				<artifactId>arquillian-weld-embedded</artifactId>
+				<version>${arquillian-weld-embedded.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -223,13 +225,13 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<arquillian>weld-ee-embedded-1.1</arquillian>
+				<arquillian>weld-embedded</arquillian>
 			</properties>
 			<dependencies>
 
 				<dependency>
 					<groupId>org.jboss.arquillian.container</groupId>
-					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+					<artifactId>arquillian-weld-embedded</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.weld</groupId>
@@ -275,16 +277,16 @@
 									<scope>test</scope>
 								</dependency>-->
 				<dependency>
-					<groupId>org.wildfly</groupId>
+					<groupId>org.wildfly.arquillian</groupId>
 					<artifactId>wildfly-arquillian-container-embedded</artifactId>
-					<version>8.1.0.Final</version>
+					<version>2.0.0.Final</version>
 					<scope>test</scope>
 				</dependency>
 			</dependencies>
 			<build>
 				<testResources>
 					<testResource>
-						<directory>metrics/src/test/resources</directory>
+						<directory>${project.basedir}/src/test/resources</directory>
 						<filtering>true</filtering>
 					</testResource>
 				</testResources>
